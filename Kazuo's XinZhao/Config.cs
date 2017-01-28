@@ -17,9 +17,9 @@ namespace XinZhao
 
         public static void DesignMenu()
         {
-            CoreMenu = MainMenu.AddMenu("XinZhao", "XinZhao");
+            CoreMenu = MainMenu.AddMenu("Kazuo's XinZhao", "Kazuo's XinZhao");
             CoreMenu.AddGroupLabel("Made by Kazuo!");
-            CoreMenu.AddLabel("?? -.- ??");
+            CoreMenu.AddLabel("- ≧◔◡◔≦ -");
             //ComboMenu
             ComboMenu = CoreMenu.AddSubMenu("Combo");
             {
@@ -39,6 +39,7 @@ namespace XinZhao
                 HarassMenu.Add("Qhr", new CheckBox("Use Q"));
                 HarassMenu.Add("Whr", new CheckBox("Use W"));
             }
+            //LaneClearMenu
             LaneClear = CoreMenu.AddSubMenu("LaneClear");
             {
                 LaneClear.AddGroupLabel("LaneClear Settings");
@@ -47,7 +48,7 @@ namespace XinZhao
                 LaneClear.Add("Elc", new CheckBox("Use E"));
                 LaneClear.Add("ManaMNGlc", new Slider("If Mana Percent below {0}% stop", 45, 0, 100));
             }
-
+            //JungleClearMenu
             JungleClear = CoreMenu.AddSubMenu("JungleClear");
             {
                 JungleClear.AddGroupLabel("LaneClear Settings");
@@ -56,7 +57,7 @@ namespace XinZhao
                 JungleClear.Add("Ejc", new CheckBox("Use E"));
                 JungleClear.Add("ManaMNGjc", new Slider("If Mana Percent below {0}% stop", 45, 0, 100));
             }
-
+            //DrawMenu
             DrawMenu = CoreMenu.AddSubMenu("Drawings");
             {
                 DrawMenu.AddGroupLabel("Draw Settings");
@@ -68,14 +69,15 @@ namespace XinZhao
                 DrawMenu.Add("dmg", new CheckBox("Draw Damage Indicator"));
                 DrawMenu.Add("Color", new ColorPicker("Damage Indicator Color", Color.FromArgb(255, 255, 236, 0)));
             }
-
+            //MiscMenu
             MiscMenu = CoreMenu.AddSubMenu("Misc");
             {
                 MiscMenu.AddGroupLabel("Misc Settings");
                 MiscMenu.AddLabel("Reset AutoAttack");
                 MiscMenu.Add("Qrs", new CheckBox("Use Q - Reset AA"));
                 MiscMenu.AddLabel("Anti Gapcloser");
-                MiscMenu.Add("HPMNGlc", new Slider("Use R - Anti Gapcloser if Health Percent below {0}%", 15, 0, 100));
+                MiscMenu.Add("Rag", new CheckBox("Use R - Anti Gapcloser"));
+                MiscMenu.Add("HPMNGlc", new Slider("If Health Percent below {0}%", 15, 0, 100));
                 MiscMenu.AddGroupLabel("Interrupt Settings");
                 MiscMenu.Add("Rint", new CheckBox("Use R - Interupt"));
                 MiscMenu.Add("Rag", new CheckBox("Use R - Interrupt Spells"));

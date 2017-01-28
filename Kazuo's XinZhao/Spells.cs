@@ -20,7 +20,7 @@ namespace XinZhao
             E = new Spell.Targeted(SpellSlot.E, 600);
             R = new Spell.Active(SpellSlot.R);
             Ignite = new Spell.Targeted(ObjectManager.Player.GetSpellSlotFromName("SummonerIgnite"), 600);
-            Smite = new Spell.Targeted(ObjectManager.Player.GetSpellSlotFromName("SummonerSmite"), 500);
+            //Smite = new Spell.Targeted(ObjectManager.Player.GetSpellSlotFromName("SummonerSmite"), 500);
         }
     }
 }

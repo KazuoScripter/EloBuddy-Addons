@@ -22,7 +22,7 @@ namespace XinZhao
             Chat.Print("XinZhao Loaded!");
 
             Game.OnTick += Ontick;
-            //Game.OnUpdate += OnUpdate;
+            Game.OnUpdate += OnUpdate;
             Config.DesignMenu();
             Spells.LoadSpells();
             Drawing.OnDraw += OnDraw;
@@ -34,10 +34,10 @@ namespace XinZhao
 
         public static readonly AIHeroClient XinThongDit = ObjectManager.Player;
 
-        //private static void OnUpdate(EventArgs args)
-        //{
-        //    Modes.DK();
-        //}
+        private static void OnUpdate(EventArgs args)
+        {
+            Modes.DK();
+        }
 
         private static void Ontick(EventArgs args)
         {
@@ -51,18 +51,10 @@ namespace XinZhao
             { Modes.DJ(); }
         }
 
-       private static void OnDraw(EventArgs args)
+        private static void OnDraw(EventArgs args)
         {
             if (Config.DrawMenu["draw"].Cast<CheckBox>().CurrentValue)
             {
-                if (Config.DrawMenu["Qdr"].Cast<CheckBox>().CurrentValue)
-                {
-                    Circle.Draw(Spells.Q.IsLearned ? Color.HotPink : Color.Zero, Spells.Q.Range, Player.Instance.Position);
-                }
-                if (Config.DrawMenu["Wdr"].Cast<CheckBox>().CurrentValue)
-                {
-                    Circle.Draw(Spells.W.IsLearned ? Color.Cyan : Color.Zero, Spells.W.Range, Player.Instance.Position);
-                }
                 if (Config.DrawMenu["Edr"].Cast<CheckBox>().CurrentValue)
                 {
                     Circle.Draw(Spells.E.IsLearned ? Color.Yellow : Color.Zero, Spells.E.Range, Player.Instance.Position);

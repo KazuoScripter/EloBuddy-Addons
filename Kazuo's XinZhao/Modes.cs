@@ -16,7 +16,7 @@ namespace XinZhao
         {
             var target = TargetSelector.GetTarget(Spells.E.Range, DamageType.Mixed);
             var dE = Config.ComboMenu["dE"].Cast<Slider>().CurrentValue;
-            var tE = Config.ComboMenu["tE"].Cast<CheckBox>().CurrentValue; 
+            var tE = Config.ComboMenu["tE"].Cast<CheckBox>().CurrentValue;
             if (target != null)
             {
                 if (Config.ComboMenu["Ecb"].Cast<CheckBox>().CurrentValue && target.IsValidTarget(Spells.E.Range) && (dE <= target.Distance(Player.Instance) || target.IsDashing()))
@@ -47,23 +47,23 @@ namespace XinZhao
             {
                 Spells.W.Cast();
             }
-        }
+        }      
         //LaneClear
         public static void DL()
         {
             var minions = ObjectManager.Get<Obj_AI_Base>().OrderBy(m => m.Health).Where(m => m.IsMinion && m.IsEnemy && !m.IsDead);
-            if (Config.LaneClear["ManaMNGlc"].Cast<Slider>().CurrentValue <= Player.Instance.ManaPercent) 
-            foreach (var m in minions)
-            {
-                if (Config.LaneClear["Wlc"].Cast<CheckBox>().CurrentValue && Spells.W.IsReady() && m.IsValidTarget(250))
+            if (Config.LaneClear["ManaMNGlc"].Cast<Slider>().CurrentValue <= Player.Instance.ManaPercent)
+                foreach (var m in minions)
                 {
-                    Spells.W.Cast();
+                    if (Config.LaneClear["Wlc"].Cast<CheckBox>().CurrentValue && Spells.W.IsReady() && m.IsValidTarget(250))
+                    {
+                        Spells.W.Cast();
+                    }
+                    if (Config.LaneClear["Elc"].Cast<CheckBox>().CurrentValue && Spells.W.IsReady() && m.IsValidTarget(Spells.E.Range))
+                    {
+                        Spells.E.Cast(m);
+                    }
                 }
-                if (Config.LaneClear["Elc"].Cast<CheckBox>().CurrentValue && Spells.W.IsReady() && m.IsValidTarget(Spells.E.Range))
-                {
-                    Spells.E.Cast(m);
-                }
-            }
         }
         //JungleClear
         public static void DJ()
@@ -93,7 +93,7 @@ namespace XinZhao
                     && t.Health <= DamageIndicator.STE(t)), DamageType.Magical);
                 if (target != null && target == btht)
                 {
-                        Spells.E.Cast(target);
+                    Spells.E.Cast(target);
                 }
             }
             if (Config.MiscMenu["Rks"].Cast<CheckBox>().CurrentValue && Spells.R.IsReady())
@@ -107,15 +107,15 @@ namespace XinZhao
                     Spells.R.Cast(target);
                 }
             }
-            if (Spells.Ignite != null 
-                && Config.MiscMenu["Iks"].Cast<CheckBox>().CurrentValue 
+            if (Spells.Ignite != null
+                && Config.MiscMenu["Iks"].Cast<CheckBox>().CurrentValue
                 && Spells.Ignite.IsReady())
             {
                 foreach (var target in btht)
-                if (target.Health < Program.XinThongDit.GetSummonerSpellDamage(target, DamageLibrary.SummonerSpells.Ignite))
-                {
-                    Spells.Ignite.Cast(target);
-                }
+                    if (target.Health < Program.XinThongDit.GetSummonerSpellDamage(target, DamageLibrary.SummonerSpells.Ignite))
+                    {
+                        Spells.Ignite.Cast(target);
+                    }
             }
         }
         //Flee
@@ -156,16 +156,17 @@ namespace XinZhao
         //AntiGapCloser
         public static void Gapcloser_OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserEventArgs args)
         {
-            if (Config.MiscMenu["HPMNGlc"].Cast<Slider>().CurrentValue <= Player.Instance.HealthPercent)
+            if (Config.MiscMenu["Rag"].Cast<CheckBox>().CurrentValue && Spells.R.IsReady())
             {
-                if (Spells.R.IsReady()
-                    && sender != null
-                    && sender.IsEnemy
-                    && sender.IsValid
-                    && (sender.IsAttackingPlayer || Player.Instance.Distance(args.End) < 200 || args.End.IsInRange(Player.Instance, Spells.R.Range))
-                    && Config.MiscMenu["Rag"].Cast<CheckBox>().CurrentValue)
+                if (Config.MiscMenu["HPMNGlc"].Cast<Slider>().CurrentValue <= Player.Instance.HealthPercent)
                 {
-                    Spells.R.Cast(args.End);
+                    if (sender != null
+                            && sender.IsEnemy
+                                && sender.IsValid
+                                    && (sender.IsAttackingPlayer || Player.Instance.Distance(args.End) < 200 || args.End.IsInRange(Player.Instance, Spells.R.Range)))
+                    {
+                        Spells.R.Cast(args.End);
+                    }
                 }
             }
         }
@@ -186,7 +187,7 @@ namespace XinZhao
             {
                 Spells.Q.Cast();
             }
-        }      
+        }
     }
 }
 
