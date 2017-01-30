@@ -174,7 +174,7 @@ namespace XinZhao
                     if (sender != null
                             && sender.IsEnemy
                                 && sender.IsValid
-                                    && (sender.IsAttackingPlayer || Player.Instance.Distance(args.End) < 200 || args.End.IsInRange(Player.Instance, Spells.R.Range)))
+                                    && (sender.IsAttackingPlayer || Player.Instance.Distance(args.End) < Spells.R.Range || args.End.IsInRange(Player.Instance, Spells.R.Range)))
                     {
                         Spells.R.Cast(args.End);
                     }
