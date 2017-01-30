@@ -7,45 +7,55 @@ using System;
 using EloBuddy.SDK.Enumerations;
 using SharpDX;
 
-namespace XinZhao
+namespace Kassadin
 {
     class Modes
     {
         //Combo
+        private static bool CanE()
+        {
+            return Program.KassDepTrai.HasBuff("ForcePulseAvailable");
+        }
         public static void DC()
         {
-            var target = TargetSelector.GetTarget(Spells.E.Range, DamageType.Mixed);
-            var dE = Config.ComboMenu["dE"].Cast<Slider>().CurrentValue;
-            var tE = Config.ComboMenu["tE"].Cast<CheckBox>().CurrentValue;
-            if (target != null)
             {
-                if (Config.ComboMenu["Ecb"].Cast<CheckBox>().CurrentValue && Spells.E.IsReady() && target.IsValidTarget(Spells.E.Range) && (dE <= target.Distance(Player.Instance)))
+                if (Config.ComboMenu["Rcb"].Cast<CheckBox>().CurrentValue && Spells.R.IsReady())
                 {
-                    if (tE)
+                    var target = TargetSelector.GetTarget(Spells.R.Range, DamageType.Magical);
+                    var tR = Config.ComboMenu["tR"].Cast<CheckBox>().CurrentValue;
+                    var Rpred = Spells.R.GetPrediction(target);
+                    if (tR && target != null && target.IsValidTarget(Spells.R.Range) && !target.IsDead && !target.IsZombie)
                     {
                         if (!target.Position.IsUnderTurret())
                         {
-                            Spells.E.Cast(target);
+                            Spells.R.Cast(Rpred.CastPosition);
                         }
                     }
                     else
                     {
                         if (target.IsDashing())
                         {
-                            Spells.E.Cast(target);
+                            Spells.R.Cast(Rpred.CastPosition);
                         }
                     }
                 }
-                if (Config.ComboMenu["Wcb"].Cast<CheckBox>().CurrentValue && Spells.W.IsReady() && target.IsValidTarget(250) && !target.IsDead && !target.IsZombie)
+                if (Config.ComboMenu["Qcb"].Cast<CheckBox>().CurrentValue && Spells.Q.IsReady())
                 {
-                    Spells.W.Cast();
-                }
-                if (Config.ComboMenu["Rcb"].Cast<CheckBox>().CurrentValue && Spells.R.IsReady())
-                {
-                    var Count = Program.XinThongDit.CountEnemyHeroesInRangeWithPrediction((int)Spells.R.Range, Spells.R.CastDelay);
-                    if (Count >= Config.ComboMenu["RcbENM"].Cast<Slider>().CurrentValue)
+                    var target = TargetSelector.GetTarget(Spells.Q.Range, DamageType.Magical);
+                    if (target != null && target.IsValidTarget(Spells.Q.Range) && !target.IsDead && !target.IsZombie)
                     {
-                        Spells.R.Cast();
+                        Spells.Q.Cast();
+                    }
+                }
+                if (Config.ComboMenu["Ecb"].Cast<CheckBox>().CurrentValue && Spells.E.IsReady() && CanE())
+                {
+                    var target = TargetSelector.GetTarget(Spells.E.Range, DamageType.Magical);
+                    if (target != null && target.IsValidTarget(Spells.E.Range) && !target.IsDead && !target.IsZombie)
+                    {
+                        var Epred = Spells.E.GetPrediction(target);
+                        {
+                            Spells.E.Cast(Epred.CastPosition);
+                        }
                     }
                 }
             }
@@ -58,7 +68,7 @@ namespace XinZhao
             {
                 Spells.W.Cast();
             }
-        }      
+        }
         //LaneClear
         public static void DL()
         {
@@ -70,7 +80,7 @@ namespace XinZhao
                     {
                         Spells.W.Cast();
                     }
-                    if (Config.LaneClear["Elc"].Cast<CheckBox>().CurrentValue && Spells.W.IsReady() && m.IsValidTarget(450))
+                    if (Config.LaneClear["Elc"].Cast<CheckBox>().CurrentValue && Spells.W.IsReady() && m.IsValidTarget(Spells.E.Range))
                     {
                         Spells.E.Cast(m);
                     }
@@ -86,7 +96,7 @@ namespace XinZhao
                 {
                     Spells.W.Cast();
                 }
-                if (Config.JungleClear["Ejc"].Cast<CheckBox>().CurrentValue && Spells.E.IsReady() && jungleMonsters.IsValidTarget(450))
+                if (Config.JungleClear["Ejc"].Cast<CheckBox>().CurrentValue && Spells.E.IsReady() && jungleMonsters.IsValidTarget(Spells.E.Range))
                 {
                     Spells.E.Cast(jungleMonsters);
                 }
@@ -123,7 +133,7 @@ namespace XinZhao
                 && Spells.Ignite.IsReady())
             {
                 foreach (var target in btht)
-                    if (target.Health < Program.XinThongDit.GetSummonerSpellDamage(target, DamageLibrary.SummonerSpells.Ignite))
+                    if (target.Health < Program.KassDepTrai.GetSummonerSpellDamage(target, DamageLibrary.SummonerSpells.Ignite))
                     {
                         Spells.Ignite.Cast(target);
                     }
@@ -184,20 +194,20 @@ namespace XinZhao
         //ResetAA
         public static void ResetAA(AttackableUnit target, EventArgs args)
         {
-            if (!Config.MiscMenu["Qrs"].Cast<CheckBox>().CurrentValue) return;
-            if (target != null && target.IsEnemy && !target.IsInvulnerable && !target.IsDead && !target.IsZombie && target.Distance(Program.XinThongDit) <= Spells.Q.Range)
+            if (!Config.MiscMenu["Wrs"].Cast<CheckBox>().CurrentValue) return;
+            if (target != null && target.IsEnemy && !target.IsInvulnerable && !target.IsDead && !target.IsZombie && target.Distance(Program.KassDepTrai) <= Spells.W.Range)
                 if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) &&
                     (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) &&
-                        (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear)))) return;
+                        (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) &&
+                            (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit))))) return;
             var e = target as Obj_AI_Base;
-            if (!Config.ComboMenu["Qcb"].Cast<CheckBox>().CurrentValue || !e.IsEnemy) return;
+            if (!Config.ComboMenu["Wcb"].Cast<CheckBox>().CurrentValue || !e.IsEnemy) return;
             //if (target == ObjectManager.Get<Obj_AI_Minion>().Where(p => p.IsValidTarget(Spells.E.Range) && p.BaseSkinName.Contains("SRU_Plant"))) return;
             if (target == null) return;
-            if (e.IsValidTarget() && Spells.Q.IsReady())
+            if (e.IsValidTarget() && Spells.W.IsReady())
             {
-                Spells.Q.Cast();
+                Spells.W.Cast();
             }
         }
     }
 }
-

@@ -1,0 +1,3 @@
+C:\Users\Admin\Documents\GitHub\EloBuddy-Addons\Kazuo's Kassadin\Kazuo's Kassadin\bin\Debug\Kazuo's Kassadin.exe.config
+C:\Users\Admin\Documents\GitHub\EloBuddy-Addons\Kazuo's Kassadin\bin\Debug\Kazuo's Kassadin.exe.config
+C:\Users\Admin\Documents\GitHub\EloBuddy-Addons\Kazuo's Kassadin\obj\Debug\Kazuo's Kassadin.csprojResolveAssemblyReference.cache

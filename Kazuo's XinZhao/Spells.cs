@@ -11,7 +11,7 @@ namespace XinZhao
         public static Spell.Targeted E;
         public static Spell.Active R;
         public static Spell.Targeted Ignite;
-        public static Spell.Targeted Smite;
+        //public static Spell.Targeted Smite;
 
         public static void LoadSpells()
         {

@@ -3,7 +3,7 @@ using EloBuddy;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 
-namespace XinZhao
+namespace Kassadin
 {
     class Config
     {
@@ -17,9 +17,9 @@ namespace XinZhao
 
         public static void DesignMenu()
         {
-            CoreMenu = MainMenu.AddMenu("Kazuo's XinZhao", "Kazuo's XinZhao");
+            CoreMenu = MainMenu.AddMenu("Kazuo's Kassadin", "Kazuo's Kassadin");
             CoreMenu.AddGroupLabel("Made by Kazuo!");
-            CoreMenu.AddLabel("≧◔◡◔≦");
+            CoreMenu.AddLabel("- ≧◔◡◔≦ -");
             //ComboMenu
             ComboMenu = CoreMenu.AddSubMenu("Combo");
             {
@@ -27,19 +27,15 @@ namespace XinZhao
                 ComboMenu.Add("Qcb", new CheckBox("Use Q"));
                 ComboMenu.Add("Wcb", new CheckBox("Use W"));
                 ComboMenu.Add("Ecb", new CheckBox("Use E"));
-                ComboMenu.Add("dE", new Slider("Use E if Enemy distance >", 250, 0, 600));
-                ComboMenu.Add("tE", new CheckBox("Don't use E under Turret", true));
-                ComboMenu.Add("Rcb", new CheckBox("Use R", false));
-                ComboMenu.Add("RcbENM", new Slider("Minium Enemies for R", 0, 1, 5));
+                ComboMenu.Add("Rcb", new CheckBox("Use R"));
+                ComboMenu.Add("tR", new CheckBox("Don't use R under Turret", true));
             }
             //HarassMenu
             HarassMenu = CoreMenu.AddSubMenu("Harass");
             {
                 HarassMenu.AddGroupLabel("Harass Settings");
                 HarassMenu.Add("Qhr", new CheckBox("Use Q"));
-                HarassMenu.Add("Whr", new CheckBox("Use W"));
-                HarassMenu.AddLabel("Mana Manager");
-                HarassMenu.Add("ManaMNGlc", new Slider("If Mana Percent below {0}% stop", 45, 0, 100));
+                HarassMenu.Add("Ehr", new CheckBox("Use E"));
             }
             //LaneClearMenu
             LaneClear = CoreMenu.AddSubMenu("LaneClear");
@@ -48,17 +44,19 @@ namespace XinZhao
                 LaneClear.Add("Qlc", new CheckBox("Use Q"));
                 LaneClear.Add("Wlc", new CheckBox("Use W"));
                 LaneClear.Add("Elc", new CheckBox("Use E"));
+                LaneClear.Add("mE", new Slider("Minimum Minions for E", 3, 1, 10));
+                LaneClear.Add("mR", new Slider("Minimum Minions for R", 3, 1, 10));
                 LaneClear.AddLabel("Mana Manager");
                 LaneClear.Add("ManaMNGlc", new Slider("If Mana Percent below {0}% stop", 45, 0, 100));
             }
             //JungleClearMenu
             JungleClear = CoreMenu.AddSubMenu("JungleClear");
             {
-                JungleClear.AddGroupLabel("JungleClear Settings");
+                JungleClear.AddGroupLabel("LaneClear Settings");
                 JungleClear.Add("Qjc", new CheckBox("Use Q"));
                 JungleClear.Add("Wjc", new CheckBox("Use W"));
                 JungleClear.Add("Ejc", new CheckBox("Use E"));
-                LaneClear.AddLabel("Mana Manager");
+                JungleClear.AddLabel("Mana Manager");
                 JungleClear.Add("ManaMNGjc", new Slider("If Mana Percent below {0}% stop", 45, 0, 100));
             }
             //DrawMenu
@@ -66,6 +64,8 @@ namespace XinZhao
             {
                 DrawMenu.AddGroupLabel("Draw Settings");
                 DrawMenu.Add("draw", new CheckBox("Enable Drawings"));
+                DrawMenu.Add("Qdr", new CheckBox("Draw Q"));
+                DrawMenu.Add("Wdr", new CheckBox("Draw W"));
                 DrawMenu.Add("Edr", new CheckBox("Draw E"));
                 DrawMenu.Add("Rdr", new CheckBox("Draw R"));
                 DrawMenu.Add("dmg", new CheckBox("Draw Damage Indicator"));
@@ -75,13 +75,14 @@ namespace XinZhao
             MiscMenu = CoreMenu.AddSubMenu("Misc");
             {
                 MiscMenu.AddGroupLabel("Misc Settings");
-                MiscMenu.AddLabel("Reset AutoAttack");
-                MiscMenu.Add("Qrs", new CheckBox("Use Q - Reset AA"));
-                MiscMenu.AddLabel("Anti Gapcloser");
-                MiscMenu.Add("Rag", new CheckBox("Use R - Anti Gapcloser"));
+                MiscMenu.AddLabel("Reset AutoAttack Settings");
+                MiscMenu.Add("Wrs", new CheckBox("Use W - Reset AA"));
+                MiscMenu.AddLabel("Anti Gapcloser Settings");
+                MiscMenu.Add("Eag", new CheckBox("Use E - Anti Gapcloser"));
                 MiscMenu.Add("HPMNGlc", new Slider("If Health Percent below {0}%", 15, 0, 100));
                 MiscMenu.AddLabel("Interrupt Settings");
-                MiscMenu.Add("Rint", new CheckBox("Use R - Interupt"));
+                MiscMenu.Add("Qint", new CheckBox("Use R - Interupt"));
+                MiscMenu.Add("Rag", new CheckBox("Use R - Interrupt Spells"));
                 MiscMenu.AddLabel("KillSteal Settings");
                 MiscMenu.Add("Eks", new CheckBox("Use E to KS"));
                 MiscMenu.Add("Rks", new CheckBox("Use R to KS"));

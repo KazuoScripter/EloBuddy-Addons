@@ -19,7 +19,7 @@ namespace XinZhao
         {
             if (Player.Instance.Hero != Champion.XinZhao) return;
 
-            Chat.Print("XinZhao Loaded!");
+            Chat.Print("Kazuo's XinZhao Loaded!");
 
             Game.OnTick += Ontick;
             Game.OnUpdate += OnUpdate;
