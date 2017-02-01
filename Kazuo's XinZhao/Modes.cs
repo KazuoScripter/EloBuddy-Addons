@@ -42,7 +42,7 @@ namespace XinZhao
                 }
                 if (Config.ComboMenu["Rcb"].Cast<CheckBox>().CurrentValue && Spells.R.IsReady())
                 {
-                    var Count = Program.XinThongDit.CountEnemyHeroesInRangeWithPrediction((int)Spells.R.Range, Spells.R.CastDelay);
+                    var Count = Program.XinThongDit.CountEnemiesInRange(450);
                     if (Count >= Config.ComboMenu["RcbENM"].Cast<Slider>().CurrentValue)
                     {
                         Spells.R.Cast();
@@ -112,7 +112,7 @@ namespace XinZhao
                 var target = TargetSelector.GetTarget(EntityManager.Heroes.Enemies.Where(t => t != null
                     && t.IsValidTarget()
                     && Spells.R.IsInRange(t)
-                    && t.Health <= DamageIndicator.STR(t)), DamageType.Magical);
+                    && t.Health <= DamageIndicator.STR(t)), DamageType.Physical);
                 if (target != null && target == btht)
                 {
                     Spells.R.Cast(target);
