@@ -87,6 +87,12 @@ namespace XinZhao
                 MiscMenu.Add("Rks", new CheckBox("Use R to KS"));
                 MiscMenu.Add("Iks", new CheckBox("Use Ignite to KS"));
                 MiscMenu.Add("Sks", new CheckBox("Use Smite to KS <SOON>"));
+                MiscMenu.AddLabel("Items Settings");
+                MiscMenu.Add("Hydra", new CheckBox("Use Hydra - Reset AA"));
+                MiscMenu.Add("Ym", new CheckBox("Use Youmuu's GhostBlade"));
+                MiscMenu.Add("Botrk", new CheckBox("Use BotRK"));
+                MiscMenu.Add("HHP", new Slider("If Health Percent below {0}%", 85, 0, 100));
+                MiscMenu.Add("EHP", new Slider("If Enemy Health Percent below {0}%", 85, 0, 100));
             }
         }
     }

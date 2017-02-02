@@ -17,6 +17,8 @@ namespace XinZhao
             var target = TargetSelector.GetTarget(Spells.E.Range, DamageType.Mixed);
             var dE = Config.ComboMenu["dE"].Cast<Slider>().CurrentValue;
             var tE = Config.ComboMenu["tE"].Cast<CheckBox>().CurrentValue;
+            var HHP = Config.MiscMenu["HHP"].Cast<Slider>().CurrentValue;
+            var EHP = Config.MiscMenu["EHP"].Cast<Slider>().CurrentValue;
             if (target != null)
             {
                 if (Config.ComboMenu["Ecb"].Cast<CheckBox>().CurrentValue && Spells.E.IsReady() && target.IsValidTarget(Spells.E.Range) && (dE <= target.Distance(Player.Instance)))
@@ -42,11 +44,23 @@ namespace XinZhao
                 }
                 if (Config.ComboMenu["Rcb"].Cast<CheckBox>().CurrentValue && Spells.R.IsReady())
                 {
-                    var Count = Program.XinThongDit.CountEnemiesInRange(450);
+                    var Count = Program.XinThongDit.CountEnemyChampionsInRange(450);
                     if (Count >= Config.ComboMenu["RcbENM"].Cast<Slider>().CurrentValue)
                     {
                         Spells.R.Cast();
                     }
+                }
+                if (Config.MiscMenu["BotRK"].Cast<CheckBox>().CurrentValue && Items.Bilgewater.IsReady() && Items.Bilgewater.IsOwned() && target.IsValidTarget(450))
+                {
+                    Items.Bilgewater.Cast(target);
+                }
+                if (Config.MiscMenu["BotRK"].Cast<CheckBox>().CurrentValue && Items.BotRK.IsReady() && target.IsValidTarget(450) && (Player.Instance.HealthPercent <= HHP || target.HealthPercent < EHP))
+                {
+                    Items.BotRK.Cast(target);
+                }
+                if (Config.MiscMenu["Ym"].Cast<CheckBox>().CurrentValue && Items.Youmuu.IsReady() && target.IsValidTarget(Program.XinThongDit.GetAutoAttackRange(target) + 100))
+                {
+                    Items.Youmuu.Cast();
                 }
             }
         }
@@ -58,7 +72,7 @@ namespace XinZhao
             {
                 Spells.W.Cast();
             }
-        }      
+        }
         //LaneClear
         public static void DL()
         {
@@ -95,38 +109,29 @@ namespace XinZhao
         //KillSteal
         public static void DK()
         {
-            var btht = EntityManager.Heroes.Enemies.Where(hero => (hero.IsValidTarget(Spells.R.Range) || hero.IsValidTarget(Spells.E.Range)) && !hero.HasBuff("FioraW") && !hero.HasBuff("JudicatorIntervention") && !hero.HasBuff("kindredrnodeathbuff") && !hero.HasBuff("Undying Rage") && !hero.HasBuff("SpellShield") && !hero.HasBuff("NocturneShield") && !hero.IsDead && !hero.IsZombie);
-            if (Config.MiscMenu["Eks"].Cast<CheckBox>().CurrentValue && Spells.E.IsReady())
+            foreach (var target in EntityManager.Heroes.Enemies.Where(x => x.IsValidTarget(600) && !x.IsZombie))
             {
-                var target = TargetSelector.GetTarget(EntityManager.Heroes.Enemies.Where(t => t != null
-                    && t.IsValidTarget()
-                    && Spells.E.IsInRange(t)
-                    && t.Health <= DamageIndicator.STE(t)), DamageType.Magical);
-                if (target != null && target == btht)
+                if (Spells.E.IsReady() && Config.MiscMenu["Eks"].Cast<CheckBox>().CurrentValue && target.IsValidTarget(Spells.E.Range))
                 {
-                    Spells.E.Cast(target);
-                }
-            }
-            if (Config.MiscMenu["Rks"].Cast<CheckBox>().CurrentValue && Spells.R.IsReady())
-            {
-                var target = TargetSelector.GetTarget(EntityManager.Heroes.Enemies.Where(t => t != null
-                    && t.IsValidTarget()
-                    && Spells.R.IsInRange(t)
-                    && t.Health <= DamageIndicator.STR(t)), DamageType.Physical);
-                if (target != null && target == btht)
-                {
-                    Spells.R.Cast(target);
-                }
-            }
-            if (Spells.Ignite != null
-                && Config.MiscMenu["Iks"].Cast<CheckBox>().CurrentValue
-                && Spells.Ignite.IsReady())
-            {
-                foreach (var target in btht)
-                    if (target.Health < Program.XinThongDit.GetSummonerSpellDamage(target, DamageLibrary.SummonerSpells.Ignite))
+                    if (target != null && target.IsValidTarget(Spells.E.Range) && target.Health < DamageIndicator.STE(target) && !target.HasUndyingBuff())
                     {
-                        Spells.Ignite.Cast(target);
+                        Spells.E.Cast(target);
                     }
+                }
+                if (Config.MiscMenu["Rks"].Cast<CheckBox>().CurrentValue && target.IsValidTarget(Spells.R.Range) && Spells.R.IsReady())
+                {
+                    if (target != null && target.Health < DamageIndicator.STR(target) && !target.HasUndyingBuff())
+                    {
+                        Spells.R.Cast();
+                    }
+                }
+                if (Spells.Ignite != null && Config.MiscMenu["Iks"].Cast<CheckBox>().CurrentValue && Spells.Ignite.IsReady())
+                {
+                        if (target.Health < Program.XinThongDit.GetSummonerSpellDamage(target, DamageLibrary.SummonerSpells.Ignite))
+                        {
+                            Spells.Ignite.Cast(target);
+                        }
+                }
             }
         }
         //Flee
@@ -169,7 +174,7 @@ namespace XinZhao
         {
             if (Config.MiscMenu["Rag"].Cast<CheckBox>().CurrentValue && Spells.R.IsReady())
             {
-                if (Config.MiscMenu["HPMNGlc"].Cast<Slider>().CurrentValue <= Player.Instance.HealthPercent)
+                if (Player.Instance.HealthPercent < Config.MiscMenu["HPMNGlc"].Cast<Slider>().CurrentValue)
                 {
                     if (sender != null
                             && sender.IsEnemy
@@ -184,6 +189,7 @@ namespace XinZhao
         //ResetAA
         public static void ResetAA(AttackableUnit target, EventArgs args)
         {
+            var Hydra = Config.MiscMenu["Hydra"].Cast<CheckBox>().CurrentValue;
             if (!Config.MiscMenu["Qrs"].Cast<CheckBox>().CurrentValue) return;
             if (target != null && target.IsEnemy && !target.IsInvulnerable && !target.IsDead && !target.IsZombie && target.Distance(Program.XinThongDit) <= Spells.Q.Range)
                 if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) &&
@@ -196,8 +202,23 @@ namespace XinZhao
             if (e.IsValidTarget() && Spells.Q.IsReady())
             {
                 Spells.Q.Cast();
+                if (Items.Hydra.IsOwned() && Items.Hydra.IsReady() && target.IsValidTarget(325))
+                {
+                    Items.Hydra.Cast();
+                }
+
+                if (Items.Tiamat.IsOwned() && Items.Tiamat.IsReady() && target.IsValidTarget(325))
+                {
+                    Items.Tiamat.Cast();
+                }
+
+                if (Items.Titanic.IsOwned() && target.IsValidTarget(325) && Items.Titanic.IsReady())
+                {
+                    Items.Titanic.Cast();
+                }
             }
         }
     }
 }
+
 

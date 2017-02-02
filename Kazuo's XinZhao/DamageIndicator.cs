@@ -19,7 +19,7 @@ namespace XinZhao
         public static float STR(Obj_AI_Base target)
         {
             if (Spells.R.IsReady())
-                return Player.Instance.CalculateDamageOnUnit(target, DamageType.Magical, new[] { 0f, 75f, 175f, 275f }[Spells.R.Level] + 1f * ObjectManager.Player.FlatPhysicalDamageMod + 0.15f * target.Health);
+                return Player.Instance.CalculateDamageOnUnit(target, DamageType.Physical, new[] { 0f, 75f, 175f, 275f }[Spells.R.Level] + 1f * ObjectManager.Player.FlatPhysicalDamageMod + 0.15f * target.Health);
             else
                 return 0f;
         }

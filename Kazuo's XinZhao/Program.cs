@@ -22,9 +22,10 @@ namespace XinZhao
             Chat.Print("Kazuo's XinZhao Loaded!");
 
             Game.OnTick += Ontick;
-            //Game.OnUpdate += OnUpdate;
+            Game.OnUpdate += OnUpdate;
             Config.DesignMenu();
             Spells.LoadSpells();
+            Items.LoadItems();
             Drawing.OnDraw += OnDraw;
             Drawing.OnEndScene += DamageIndicator.Damage_Indicator;
             Gapcloser.OnGapcloser += Modes.Gapcloser_OnGapcloser;
@@ -34,10 +35,10 @@ namespace XinZhao
 
         public static readonly AIHeroClient XinThongDit = ObjectManager.Player;
 
-        //private static void OnUpdate(EventArgs args)
-        //{
-        //    Modes.DK();
-        //}
+        private static void OnUpdate(EventArgs args)
+        {
+            Modes.DK();
+        }
 
         private static void Ontick(EventArgs args)
         {
@@ -49,9 +50,6 @@ namespace XinZhao
             { Modes.DL(); }
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
             { Modes.DJ(); }
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None))
-            { Modes.DK(); }
-            Modes.DK();
         }
 
         private static void OnDraw(EventArgs args)
