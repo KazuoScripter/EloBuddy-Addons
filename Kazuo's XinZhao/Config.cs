@@ -28,7 +28,7 @@ namespace XinZhao
                 ComboMenu.Add("Wcb", new CheckBox("Use W"));
                 ComboMenu.Add("Ecb", new CheckBox("Use E"));
                 ComboMenu.Add("dE", new Slider("Use E if Enemy distance >", 250, 0, 600));
-                ComboMenu.Add("tE", new CheckBox("Don't use E under Turret", true));
+                ComboMenu.Add("tE", new CheckBox("Don't use E under Turret"));
                 ComboMenu.Add("Rcb", new CheckBox("Use R", false));
                 ComboMenu.Add("RcbENM", new Slider("Minium Enemies in R range", 0, 1, 5));
             } 

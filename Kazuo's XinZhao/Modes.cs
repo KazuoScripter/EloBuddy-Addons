@@ -21,7 +21,7 @@ namespace XinZhao
             var EHP = Config.MiscMenu["EHP"].Cast<Slider>().CurrentValue;
             if (target != null)
             {
-                if (Config.ComboMenu["Ecb"].Cast<CheckBox>().CurrentValue && Spells.E.IsReady() && target.IsValidTarget(Spells.E.Range) && (dE <= target.Distance(Player.Instance)))
+                if (Config.ComboMenu["Ecb"].Cast<CheckBox>().CurrentValue && Spells.E.IsReady() && target.IsValidTarget(Spells.E.Range) && (dE <= target.Distance(Player.Instance) || target.IsDashing()))
                 {
                     if (tE)
                     {
@@ -32,10 +32,7 @@ namespace XinZhao
                     }
                     else
                     {
-                        if (target.IsDashing())
-                        {
-                            Spells.E.Cast(target);
-                        }
+                        Spells.E.Cast(target);
                     }
                 }
                 if (Config.ComboMenu["Wcb"].Cast<CheckBox>().CurrentValue && Spells.W.IsReady() && target.IsValidTarget(250) && !target.IsDead && !target.IsZombie)
